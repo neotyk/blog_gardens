@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>I could release...<br/>Do</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script> 
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/> 
+  </head>
+  <body>
+    <h1>Maven not only to build</h1>
+    <div>
+      Some of you might know it but I'll tell it anyway, Maven is not only to build your project.
+      It can for example take care of your releases.
+      <br/>
+      Goal of this post is to help you to get to stage where
+      <pre class="brush: bash">mvn release:prepare</pre> will prepare release for you and
+      <pre class="brush: bash">mvn release:perform</pre> will do the release dance.
+    </div>
+
+    <h1>Create sandbox</h1>
+    <div>
+      You'll find it realy usefull to have your local Nexus instance for testing.
+      <br/>
+      Download it from <a href="http://nexus.sonatype.org/using/download.html">here</a>.<br/>
+      Install by following <a href="http://nexus.sonatype.org/using/documentation.html">instructions</a>.<br/>
+      Create user for deploying artifacts to your local Nexus instance.
+    </div>
+
+    <h1>Your project</h1>
+    <div>
+      Make sure that you can build your project with tests. That is <pre class="brush: bash">mvn clean install</pre> builds sucessfuly.
+    </div>
+
+    <h1>Setup SNAPSHOT deployment</h1>
+    <div>
+      Configure <a href="http://maven.apache.org/pom.html#Repository">snapshotRepository</a> element of
+      <a href="http://maven.apache.org/pom.html#Distribution_Management">distributionManagement</a>.<br/>
+      <em>url</em> has to reference your local Nexus instance, remember we are testing now.<br/>
+      Also you'll need to modify <a href="http://maven.apache.org/ref/current/maven-settings/settings.html">settings.xml</a> to contain <a href="http://maven.apache.org/ref/current/maven-settings/settings.html#class_server">server</a> element of same <em>id</em> as in <em>snapshotRepository</em>.<br/>
+      Now go ahead and <code>mvn deploy</code>, and voila you should have your snapshots in your sandbox repository.
+    </div>
+
+    <h1>Now for the real thing</h1>
+    <div>
+      Time to prepare real releases.<br/>
+      You probably have some sort of version control setup already for your project, if not stop reading and set it up. No, I'm serius, go install some version control for your code, I'll wait here for you.<br/>
+      So as you have version control you probably don't want to mess it up with test releases.<br/>
+      Create local repository for testing as described <a href="http://www.xsteve.at/prg/vc_svn/svn.txt">here</a>.<br/>
+      Import project to you local repo and checkout from it.<br/>
+      Next thing is to modify your pom.xml to reference your new scm location.<br/>
+      Also repository element in distributionManagement.
+      Provide settings.xml entry for releases.
+    </div>
+  </body>
+</html>
