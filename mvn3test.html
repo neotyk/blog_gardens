@@ -12,7 +12,7 @@
     <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
   </head>
   <body>
-    <h1>Maven 3 is comming</h1>
+    <h1>Maven 3 is coming</h1>
     <div>
       Maven 3 is supposed to be drop in replacement of Maven 2.<br/>
       So you should be able to build your Maven based build with Maven 3 with no problem.<br/>
@@ -54,7 +54,13 @@
     <h1>Start using it</h1>
     <div>
       And that is it, you have Maven 3.<br/>
-      You probably will see quite some warnings about your poms that previously where unnoticed.<br/>
+      As verification step execute, end expect something similar:
+      <pre class="brush: bash">
+        $ mvn -version
+        Apache Maven 3.0-SNAPSHOT (r828135; 2009-10-21 20:46:19+0200)
+        ...
+      </pre>
+      You probably will see quite some warnings while building your projects that previously where unnoticed.<br/>
       Following those instructions will improve your build.<br/>
       Enjoy your new build tool!
     </div>
