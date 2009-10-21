@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Test your build with Maven 3!</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h1>Maven 3 is comming</h1>
+    <div>
+      Maven 3 is supposed to be drop in replacement of Maven 2.<br/>
+      So you should be able to build your Maven based build with Maven 3 with no problem.<br/>
+      So lets take Maven 3 for a spin.
+    </div>
+
+    <h1>Getting Maven 3</h1>
+    <div>
+      You can get Maven 3 binaries or build it by hand.
+    </div>
+    <h2>Getting binaries</h2>
+    <div>
+      You can grab binaries from <a href="http://sonatype.com">Sonatype</a>s <a href="https://grid.sonatype.org/ci/">Hudson grid</a>.<br/>
+      Depending on your platform:
+      <dl>
+        <dt>Linux</dt>
+        <dd><a href="https://grid.sonatype.org/ci/view/Maven%203.0.x/job/maven-3.0.x-bootstrap/jdk=1.5,label=ubuntu/lastSuccessfulBuild/artifact/trunk/apache-maven/target/apache-maven-3.0-SNAPSHOT-bin.zip">lastSuccessfulBuild from ubuntu</a></dd>
+
+        <dt>Windows</dt>
+        <dd><a href="https://grid.sonatype.org/ci/view/Maven%203.0.x/job/maven-3.0.x-bootstrap/jdk=1.5,label=windows/lastSuccessfulBuild/artifact/trunk/apache-maven/target/apache-maven-3.0-SNAPSHOT-bin.zip">lastSuccessfulBuild from windows</a></dd>
+      </dl>
+      And extract it to your new <em>M2_HOME</em>.
+    </div>
+    <h2>Building from source</h2>
+    <div>
+      Check it out, and build:
+      <pre class="brush: bash">
+        $ svn co http://svn.apache.org/repos/asf/maven/maven-3/trunk maven-3
+        $ cd maven-3
+        $ export M2_HOME=/your/new/m3/home/
+        $ ant
+      </pre>
+      So you have your own build of Maven 3 at <em>/your/new/m3/home/</em>. Congratulations!
+    </div>
+    <h2>Add to path</h2>
+    <div>
+      Independently how you got your new Maven 3, you need to add <em>M2_HOME/bin</em> to your <em>PATH</em> environment variable.
+    </div>
+    <h1>Start using it</h1>
+    <div>
+      And that is it, you have Maven 3.<br/>
+      You probably will see quite some warnings about your poms that previously where unnoticed.<br/>
+      Following those instructions will improve your build.<br/>
+      Enjoy your new build tool!
+    </div>
+  </body>
+</html>
