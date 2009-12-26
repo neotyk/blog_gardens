@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>Clojure Start Again</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js"></script>
+     <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h1>Clojure start again</h1>
+    <div>It's my another attempt to learn <a href="http://clojure.org">Clojure</a>.<br/>
+      Landscape has changed a lot since <a href="http://codemeself.blogspot.com/2009/02/clojure.html">last time I took a look</a>.
+    </div>
+
+    <h1>Toolbox</h1>
+    <div>Some tools that I used to play comfortably</div>
+
+    <h2>Building and dependency tracking</h2>
+    <div>Most popular is unfortunately <a href="http://ant.apache.org">Ant</a> in building <a href="http://clojure.org">Clojure</a>. I'm not looking forward to editing <em>build.xml</em> files again.<br/>
+    But there are two alternatives that keep track of dependencies, and do packaging.
+    <h3>Leiningen - build tool</h3>
+    <div><blockquote cite="http://github.com/technomancy/leiningen">Leiningen is a build tool for Clojure designed to not set your hair on fire.</blockquote>
+      That certainly sounds nice. Installation is straightforward as well, following <a href="http://zef.me/2470/building-clojure-projects-with-leiningen">Zefs instructions</a> does the trick.<br/>It boils down to this:
+      <pre class="brush: bash">cd ~/bin
+wget http://github.com/technomancy/leiningen/raw/stable/bin/lein
+chmod +x lein
+lein self-install</pre>
+      <a href="http://github.com/technomancy/leiningen">Leiningen</a> is wrapping up <a href="http://maven.apache.org">Maven2</a> in nice <a href="http://clojure.org">Clojure</a> syntax and gives you by default access not only to Maven Central Repository but also <a href="http://clojars.org">clojars.org</a>.
+    </div>
+
+    <h3>clojure-maven-plugin - build tool</h3>
+    <div>Another option is <a href="http://github.com/talios/clojure-maven-plugin">clojure-maven-plugin</a> <a href="http://maven.apache.org">Maven2</a> plug-in to help you out with <a href="http://clojure.org">Clojure</a>.<br/>
+    Adding following snippet should get you started:
+      <pre class="brush: xml">&lt;plugins&gt;
+  &lt;plugin&gt;
+    &lt;groupId&gt;com.theoryinpractise&lt;/groupId&gt;
+    &lt;artifactId&gt;clojure-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;1.3&lt;/version&gt;
+  &lt;/plugin&gt;
+&lt;/plugins&gt;</pre>
+
+    <h2><abbr title="Interactive Development Environment">IDE</abbr></h2>
+    <div>There is quite some options here, following one is <a href="http://acidrayne.net/?p=81">most popular</a> amongst <a href="http://clojure.org">Clojure</a> developers.</div>
+
+    <h3>Emacs + SLIME</h3>
+    <div>Well normally I use <a href="http://vim.org">VIM</a>, but after watching <a href="http://www.bestinclass.dk/index.php/2009/12/dynamic-interactive-webdevelopment/">Dynamic Interactive Webdevelopment</a> I took for a spin Emacs, well <a href="http://aquamacs.org/">Aquaemacs</a>.<br/>
+      Following two posts were very helpful in setting up nice environment:
+      <ul>
+        <li><a href="http://incanter-blog.org/2009/12/20/getting-started/">Setting up Clojure, Incanter, Emacs, Slime, Swank, and Paredit</a>,</li>
+        <li><a href="http://www.dancheah.com/2009/09/been-playing-with-clojure-off-and-on-for-the-last-couple-of-months-decided-to-get-more-serious-with-it-the-last-week-or-so.html">Setting up Clojure, Emacs and SLIME</a>.</li>
+      </ul>
+      After some problems that got solved by setting up <em>swank-clojure-classpath</em> my new IDE was up.<br/>
+      And it welcomes me with message: <q style="font-size: large">Connected. Your hacking starts... NOW!</q><br/>
+      Lets get learning <a href="http://clojure.org">Clojure</a>.
+    </div>
+  </body>
+</html>
