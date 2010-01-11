@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>clojure.core/str makes sense</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h3><a href="http://bit.ly/68DPP7">clojure.core/str</a> makes
+  sense</h3>
+    <div>While reading excellent
+      <a href="http://pragprog.com/titles/shcloj/programming-clojure">Programming
+      Clojure</a> by <a href="http://twitter.com/StuartHalloway">Stuart
+      Halloway</a>, instead just reading I started looking into how things
+      are done by <a href="http://clojure.org">Clojure</a>
+      itself.<br/>
+      <a href="http://twitter.com/neotyk/status/7592828560">Yesterday</a>
+      it  took me some time before I understood how things are done by
+      <em><a
+  href="http://bit.ly/68DPP7">clojure.core/str</a></em>. This post is
+  documentation of my findings.<br/>
+      Following modification of said function was very helpful in
+      understanding how it works:
+      <script src="http://gist.github.com/273716.js?file=mystr.clj"></script>
+      <b><a href="http://clojure.org/special_forms">:tag</a></b>
+  metadata key is <q>a symbol naming a class or a Class object that
+  indicates the Java type of the object in the var, or its return
+  value if the object is a fn.</q>.<br/>
+      Next are three parameters body pairs.
+      <dl>
+	<dt><span style="font-size: large">([] "")</span></dt>
+	<dd>No arguments (<a
+	  href="http://en.wikipedia.org/wiki/Arity">arity</a> 0) will
+	  result in <em>""</em> (empty string)<br/>
+	  <script src="http://gist.github.com/273716.js?file=out0.clj"></script>
+	</dd>
+	<dt><span style="font-size: large">([#^Object x]<br/>
+   (if (nil? x) "" (. x (toString))))</span></dt>
+	<dd>One argument call (<a
+  href="http://en.wikipedia.org/wiki/Arity">arity</a> 1) will call <a
+  href="http://java.sun.com/javase/6/docs/api/java/lang/Object.html#toString%28%29"><em>java.lang.Object</em>s
+  toString</a> method.<br/>
+	  <em>#^Object</em> is a <a
+  href="http://clojure.org/java_interop#toc35">Type Hint</a>.<br/>
+	  <a href="http://clojure.org/special_forms#toc2">if</a>
+  should not need much explanation.<br/>
+	  <script src="http://gist.github.com/273716.js?file=out1.clj"></script>
+	</dd>
+      <dt><span style="font-size: large">([x & ys]<br/>
+     ((fn [#^StringBuilder sb more]<br/>
+          (if more<br/>
+            (recur (. sb (append (str (first more)))) (next more))<br/>
+            (str sb)))<br/>
+      (new StringBuilder #^String (str x)) ys)))</span></dt>
+      <dd>This is where it starts to be interesting.<br/>
+	First unnamed function is defined that accepts <a
+  href="http://java.sun.com/javase/6/docs/api/java/lang/StringBuilder.html">StringBuilder</a>
+  <em>sb</em> and <em>more</em> params.<br/>
+	If <em>more</em> is <em>true</em>, that is not <em>nil</em> or
+	<em>false</em> than call recursively self with new
+	parameters
+	<ul>
+	  <li><em>sb</em> with <a
+	  href="http://java.sun.com/javase/6/docs/api/java/lang/StringBuilder.html#append%28java.lang.String%29">append</a>ed
+	  result of calling <em>str</em> with first element of
+	  <em>more</em>,
+	  </li>
+	  <li><em>more</em> with elements after first.</li>
+	</ul>
+	If <em>more</em> is <em>false</em>, that in our context will
+	happen only when <em>more</em> is <em>nil</em>, call
+  <em>sb</em>'s <em>toString</em>.<br/>
+	Next just defined function is getting called with new
+	StringBuilder constructed from <em>x</em> as <em>sb</em> and <em>ys</em> as
+	<em>more</em>.<br/>
+	<script
+  src="http://gist.github.com/273716.js?file=out2.clj"></script><br/>
+	<script src="http://gist.github.com/273716.js?file=out3.clj"></script>
+      </dd>
+    </dl>
+    It took me some time to realize that <em>ys</em> are turning into <em>more</em>.<br/>
+    So there you have it <em>clojure.core/str</em> explained.
+    </div>
+ </body>
+</html>
