@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>*print-length*</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h3><a href="TODO">*print-length*</a> and why it affects <a href="http://bit.ly/68DPP7">clojure.core/str</a></h3>
+    <div>While having fun with <a href="TODO">swank.core/break</a> I managed to "freeze" it.<br />
+      As it <a href="TODO link to bug report">turns out</a> issue was that <a href="http://bit.ly/68DPP7">clojure.core/str</a>
+      tried to realize infinite sequence, to print locals. Even if you don't know what it means you must agree that it doesn't sound like a good
+      idea with finite resources available.<br />
+      I remebered that you could limit number of items printed, <a href="TODO">Duck Duck Go</a> it and <b>*print-length*</b> showed up.<br />
+      This is cool but it is for printing, isn't it?</div>
+    <TODO>Make it to gist:
+      user=> (str '(1 2))
+      "(1 2)"</TODO>
+    But look at that:
+    <TODO gist>
+      user=> (binding [*print-length* 1] (str '(1 2)))
+      "(1 ...)"</TODO>
+    Alright, this is good news, this means that fix will be <a href="TODO link to patch">simple</a>, but on the other hand, why it worked?<br />
+    Documentation says following:
+    <TODO gist>
+      user=> (doc str)
+      -------------------------
+      clojure.core/str
+      ([] [x] [x & ys])
+      With no args, returns the empty string. With one arg x, returns
+      x.toString().  (str nil) returns the empty string. With more than
+      one arg, returns the concatenation of the str values of the args.
+      nil</TODO>
+    It doesn't look to me like it should honor <b>*print-length*</b>. Same in <a href="source of str">source code</a>, it doesn't realy tell why it works.<br />
+    This was certainly a time to consult global Clojure brain, thanks to <TODO>list guys that helped</TODO> mystery was solved.<br />
+    <h3>And the reason is</h3>
+    <div>What happens when I you call <code>(str '(1 2))</code>?
+      TODO Finish.
+  </body>
+</html>
