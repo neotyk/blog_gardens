@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>clojure.core/lazy-seq makes sense</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h3><a href="LINK lazy-seq source">clojure.core/lazy-seq</a> makes sense</h3>
+    <div>Yesterday on #clojure TODO(someone) asked about <a href="LINK to infamous wiki">infamous wiki entry</a>.<br/>
+      I remember that while a go, when I tried to understand <a href="LINK to clojure lazynes">lazynes</a> in Clojure
+      I stumbled upon this entry as well, and it caused only confusion, as it is totaly outdated.</div>
+    <h3>Not lazy seq</h3>
+    <div>When you construct a seq in non lazy way you should expect that all elements are realised at creation time.<br/>
+      <code>
+	(let [a (cons 1 (cons 2 nil))] (first a))
+	=> 1
+      </code>
+      Nothing special here. Lets introduce side effects to see what happens.
+      <code>
+	(let [a (cons (do (println "one") 1) (cons (do (println "two") 2) nil))] (first a))
+	: one
+	: two
+	=> 1
+      </code>
+      As you expected all elements has been realised while constructing "a", though we only needed first element.
+      And that's exeactly where lazynes kicks in.</div>
+    <h3>lazy-seq</h3>
+    <div>First lets construct lazy seq with no side effects.<br/>
+      <code>
+	(let [a (lazy-seq (cons 1 (lazy-seq (cons 2 nil))))] (first a))
+	=> 1
+      </code>
+      So what is new? You have to type more and effect is the same. Why?<br/>
+      Adding side effects will help undertand it.<br/>
+      <code>
+	(let [a (lazy-seq (cons (do (println "one") 1) (lazy-seq (cons (do (println "two") 2) nil))))] (first a))
+	: one
+	=> 1
+      </code>
+      Now you should be able to see the benefit. Result is the same, except not whole sequence has been realized,
+      only first element, as it was only element that was requested.<br/>
+      That is very powerful tool, you can construct infinite sequences, have side effects create elemets "on demand".
+      TODO other bennefits of lazynes.</div>
+    <h3>Extreme case</h3>
+    <div>Not that would make much sense in real application but will show why you will enjoy lazynes in Clojure.<br/>
+      <code>
+	(let [a (cons (do (println "one") 1) (cons (do (println "two") 2) nil))])
+	: one
+	: two
+	=> nil
+      </code>
+      We didn't need even single element but whole seq was realized.
+      <code>
+	(let [a (lazy-seq (cons (do (println "one") 1) (lazy-seq (cons (do (println "two") 2) nil))))])
+	=> nil
+      </code>
+      If not even a single element is needed, than not even single element will be realized.<br/>
+      Hope it helped you understanding what is lazynes in Clojure and what are it's benefits.
+    </div>
+  </body>
+</html>
