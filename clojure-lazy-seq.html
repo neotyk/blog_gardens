@@ -1,23 +1,23 @@
-<html>
-  <head>
-    <title>clojure.core/lazy-seq makes sense</title>
-    <style type="text/css">
+<html> 
+  <head> 
+    <title>clojure.core/lazy-seq makes sense</title> 
+    <style type="text/css"> 
       code { font-size: large }
       .stdout { color: grey }
       .result { color: green }
-    </style>
-  </head>
-  <body>
-    <h3><a href="http://bit.ly/dsPqd5">clojure.core/lazy-seq</a> makes sense</h3>
-    <div>Few days ago on #clojure <a href="http://bit.ly/93h5iI">bartj</a> asked about <a href="http://bit.ly/9zzBg0">infamous wiki entry</a>.<br/>
-      I remember that while a go, when I tried to understand <a href="http://bit.ly/buja8y">lazyness</a> in Clojure
-      I stumbled upon this entry as well, and it caused only confusion, as it is totally outdated.<br/>
-      Lets try to shed some light on it.</div>
-    <h3>Not lazy seq</h3>
-    <div>When you construct a seq in non lazy way you should expect that all elements are realized at creation time.<br/>
+    </style> 
+  </head> 
+  <body> 
+    <h3><a href="http://bit.ly/dsPqd5">clojure.core/lazy-seq</a> makes sense</h3> 
+    <div>Few days ago on #clojure <a href="http://bit.ly/93h5iI">bartj</a> asked about <a href="http://bit.ly/9zzBg0">an infamous wiki entry</a>.<br/> 
+      I remember that while ago, when I tried to understand <a href="http://bit.ly/buja8y">lazyness</a> in Clojure
+      I stumbled upon this entry as well, and it caused me only confusion, as it is totally outdated.<br/> 
+      Let's try to shed some light on it.</div> 
+    <h3>Not lazy seq</h3> 
+    <div>When you construct a seq in non lazy way you should expect that all elements are realized at creation time.<br/> 
       <pre><code>(let [a (cons 1 (cons 2 nil))] (first a))
-<span class="result">=> 1</span></code></pre>
-      Nothing special here. Lets introduce side effects to see what happens.
+<span class="result">=> 1</span></code></pre> 
+      Nothing special here. Let's introduce side effects to see what happens.
       <pre><code>(let [a (cons
 	 (do (println "one") 1)
 	 (cons
@@ -25,51 +25,51 @@
 	  nil))]
   (first a))
 <span class="stdout">: one
-: two</span>
-<span class="result">=> 1</span></code></pre>
-      As you expected all elements has been realized while constructing <code>a</code>, though we only needed first element.<br/>
-      And that's exactly where lazyness kicks in.</div>
-    <h3>lazy-seq</h3>
-    <div>First lets construct lazy seq with no side effects.<br/>
+: two</span> 
+<span class="result">=> 1</span></code></pre> 
+      As you expected all elements has been realized while constructing <code>a</code>, though we only needed the first element.<br/> 
+      And that's exactly where lazyness kicks in.</div> 
+    <h3>lazy-seq</h3> 
+    <div>First lets construct lazy seq with no side effects.<br/> 
       <pre><code>(let [a (lazy-seq (cons 1
 	           (lazy-seq (cons 2 nil))))]
   (first a))
-<span class="result">=> 1</span></code></pre>
-      So what is new? You have to type more and effect is the same. Why?<br/>
-      Adding side effects will help understanding it.<br/>
+<span class="result">=> 1</span></code></pre> 
+      So what is new? You have to type more and effect is the same. Why?<br/> 
+      Adding side effects will help understanding it.<br/> 
       <pre><code>(let [a (lazy-seq (cons
 	           (do (println "one") 1)
 	           (lazy-seq (cons
 	                      (do (println "two") 2) nil))))]
   (first a))
-<span class="stdout">: one</span>
-<span class="result">=> 1</span></code></pre>
-      Now you should be able to see the benefit. Result is the same, except not whole sequence has been realized,<br/>
-      only first element, as it was only element that was needed.<br/>
-      Lazyness is very powerful tool:
-      <ul>
-	<li>you can construct infinite sequences,</li>
-	<li>have side effects create elements <em>on demand</em>, if seq construction is heavy, you might want to only issue creation of elements you'll use,</li>
-	<li>it has same interface as non-lazy seq, code using it does not have to care about it.</li>
-      </ul>
-    </div>
-    <h3>Extreme case</h3>
-    <div>Not that would make much sense in real application but will show you why you will enjoy lazyness in Clojure.<br/>
+<span class="stdout">: one</span> 
+<span class="result">=> 1</span></code></pre> 
+      Now you should be able to see the benefit. Result is the same, except the whole sequence hasn't been realized,<br/> 
+      except for the first element, as it was the only element that was needed.<br/> 
+      Lazyness is a very powerful tool:
+      <ul> 
+	<li>you can construct infinite sequences,</li> 
+	<li>have side effects create elements <em>on demand</em>, if seq construction is heavy, you might want to only issue creation of elements you'll use,</li> 
+	<li>it has same interface as non-lazy seq, code using it does not have to care about it.</li> 
+      </ul> 
+    </div> 
+    <h3>To sum it up</h3> 
+    <div>
       <pre><code>(let [a (cons
 	 (do (println "one") 1)
 	 (cons
 	  (do (println "two") 2) nil))])
 <span class="stdout">: one
-: two</span>
-<span class="result">=> nil</span></code></pre>
-      We didn't need even single element but seq was realized.
+: two</span> 
+<span class="result">=> nil</span></code></pre> 
+      We didn't need even single element but the whole seq was realized.
       <pre><code>(let [a (lazy-seq (cons
 	           (do (println "one") 1)
 	           (lazy-seq (cons
                               (do (println "two") 2) nil))))])
-<span class="result">=> nil</span></code></pre>
-      If not even a single element is needed, than not even a single element will be realized.<br/>
+<span class="result">=> nil</span></code></pre> 
+      If not even a single element is needed, than not even a single element will be realized.<br/> 
       So there you have it <a href="http://bit.ly/dsPqd5"><em>clojure.core/lazy-seq</em></a> explained.
-    </div>
-  </body>
-</html>
+    </div> 
+  </body> 
+</html> 
