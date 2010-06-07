@@ -10,7 +10,7 @@
   <body> 
     <h3><a href="http://bit.ly/dsPqd5">clojure.core/lazy-seq</a> makes sense</h3> 
     <div>Few days ago on #clojure <a href="http://bit.ly/93h5iI">bartj</a> asked about <a href="http://bit.ly/9zzBg0">an infamous wiki entry</a>.<br/> 
-      I remember that while ago, when I tried to understand <a href="http://bit.ly/buja8y">lazyness</a> in Clojure
+      I remember that while ago, when I tried to understand <a href="http://bit.ly/buja8y">laziness</a> in Clojure
       I stumbled upon this entry as well, and it caused me only confusion, as it is totally outdated.<br/> 
       Let's try to shed some light on it.</div> 
     <h3>Not lazy seq</h3> 
@@ -28,7 +28,7 @@
 : two</span> 
 <span class="result">=> 1</span></code></pre> 
       As you expected all elements has been realized while constructing <code>a</code>, though we only needed the first element.<br/> 
-      And that's exactly where lazyness kicks in.</div> 
+      And that's exactly where laziness kicks in.</div> 
     <h3>lazy-seq</h3> 
     <div>First lets construct lazy seq with no side effects.<br/> 
       <pre><code>(let [a (lazy-seq (cons 1
@@ -46,7 +46,7 @@
 <span class="result">=> 1</span></code></pre> 
       Now you should be able to see the benefit. Result is the same, except the whole sequence hasn't been realized,<br/> 
       except for the first element, as it was the only element that was needed.<br/> 
-      Lazyness is a very powerful tool:
+      Laziness is a very powerful tool:
       <ul> 
 	<li>you can construct infinite sequences,</li> 
 	<li>have side effects create elements <em>on demand</em>, if seq construction is heavy, you might want to only issue creation of elements you'll use,</li> 
