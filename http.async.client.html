@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Asynchronous HTTP Client for Clojure and Twitter Streams</title>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+    <script type="text/javascript">
+      SyntaxHighlighter.config.bloggerMode = true;
+      SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+      SyntaxHighlighter.all();
+    </script>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+    <link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" id="shTheme"/>
+  </head>
+  <body>
+    <h1>Asynchronous HTTP Client for Clojure and Twitter Streams</h1>
+    <div><a href="http://github.com/neotyk/http.async.client">http.async.client</a> is based on <a href="http://github.com/AsyncHttpClient/async-http-client">Asynchronous HTTP Client for Java</a>
+    witch runs by default on top of <a href="http://jboss.org/netty">Netty Project</a>.</div>
+    <div>So much for introduction, lets see a sample code:
+    <code>
+(ns sample
+  (:require [http.async.client :as c]))
+
+(let [r (c/GET "http://example.com/")]
+  (c/await r)
+  (c/string r))
+    </code>
+    This just got response from HTTP GET request to http://example.com and return string representation of HTTP Response body.<br/>
+    This would not work for Twitter Stream because responses of that API are not meant to finish, but you are supposed to just get events from it.<br/>
+    Now a real thing:
+    <code>
+(ns sample-twitter
+  (:require [http.async.client :as c]))
+
+(let [resp (c/stream-seq :get "http://stream.twitter.com/..." :auth {:user uid :password pass})]
+  (doseq [twit (c/string resp)]
+    (println twit)))
+    </code>
+    This will print twits from Twitter Stream API, and will not run out of memory.
+    </div>
+    <h1>Project information</h1>
+    <div>To get it via leiningen to your project add following to :dependencies
+    <code>[http.async.client "0.2.0"]</code>.<br/>
+    </div>
+    <div>This project previously was named <b>ahc-clj</b> which was hard to pronounce and didn't really say what it does.</div>
+    <div>With 0.2.0 release <a href="http://github.com/neotyk/http.async.client/blob/master/changelog.org">following features</a> have been introduced:
+    <ul>
+      <li>HTTP Streams as seq,</li>
+      <li>Cookies support,</li>
+      <li>Authorization support,</li>
+      <li>Proxy per request configuration,</li>
+      <li>Branding <em>User-Agent</em>,</li>
+      <li>Keyworded arguments in API.</li>
+    </ul></div>
+    <div>Enjoy it!</div>
+  </body>
+</html>
