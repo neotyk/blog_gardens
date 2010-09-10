@@ -2,10 +2,10 @@
 #+AUTHOR: Hubert Iwaniuk
 #+EMAIL: neotyk@kungfoo.pl
 * [[http://github.com/neotyk/http.async.client][*http.async.client*]] & [[http://dev.twitter.com/pages/streaming_api][Twitter Streaming API]]
-  [[http://github.com/neotyk/http.async.client][*http.async.client*]] is based on [[http://github.com/ning/async-http-client][Asynchronous Http Client for Java]]
+  [[http://github.com/neotyk/http.async.client][*http.async.client*]] is a [[http://clojure.org/][Clojure]] library based on [[http://github.com/AsyncHttpClient/async-http-client][Asynchronous Http Client for Java]]
   which runs on top of [[http://jboss.org/netty][Netty Project]].
 
-  So much for introduction, lets see some code.
+  So much for introduction, lets see some sample code that uses Twitter [[http://dev.twitter.com/pages/streaming_api_methods][streaming api]].
 
   Importing:
 #+BEGIN_SRC clojure
@@ -26,7 +26,7 @@
     (println user "=>" text)))
 #+END_SRC
 
-  Lets read *statuses/sample*::
+  Lets read *statuses/sample*:
 #+BEGIN_SRC clojure
 (doseq [twit-str (c/string
                   (c/stream-seq :get "http://stream.twitter.com/1/statuses/sample.json"
@@ -43,8 +43,8 @@
   (print-user-and-text twit-str))
 #+END_SRC
 
-  Those two samples shows how to use HTTP Streams as [[http://richhickey.github.com/clojure/clojure.core-api.html#clojure.core/seq][clojure.core/seq]],
-  this is a new feature that was introduced in [[http://github.com/neotyk/http.async.client/tree/v0.2.0][v0.2.0]].
+  Those two samples show also how to consume HTTP Streams as [[http://richhickey.github.com/clojure/clojure.core-api.html#clojure.core/seq][clojure.core/seq]],
+  a new feature that was introduced in [[http://github.com/neotyk/http.async.client/tree/v0.2.0][v0.2.0]].
 
   You can also handle sequences via [[http://neotyk.github.com/http.async.client/docs.html#sec-1.2.4.2][callbacks]].
 
@@ -55,12 +55,12 @@
   (c/string response))
 #+END_SRC
 
-  There is extensive documentation available on [[http://neotyk.github.com/http.async.client][github pages]] of a
+  There is extensive documentation available on the [[http://neotyk.github.com/http.async.client][github pages]] of the
   [[http://github.com/neotyk/http.async.client][project]], you can also find [[http://github.com/neotyk/http.async.client/blob/master/changelog.org][Changelog]] and [[http://neotyk.github.com/ahc-clj/autodoc/][API]].
 
-  Big thanks to [[http://groups.google.com/group/amsterdam-clojurians][Amsterdam Clojurians]] this library
-  received much love and help from this group.
+  Big thanks go to [[http://groups.google.com/group/amsterdam-clojurians][Amsterdam Clojurians]], this library
+  received so much love and help from this group.
   Kudos to [[http://twitter.com/jfarcand][Jeanfrancois Arcand]] for starting
-  [[http://github.com/AsyncHttpClient/async-http-client][async-http-client]] and a recent [[http://jfarcand.wordpress.com/2010/09/04/async-http-client-1-1-0-released/][1.1.0 release]].
+  [[http://github.com/AsyncHttpClient/async-http-client][async-http-client]] recently reaching the [[http://jfarcand.wordpress.com/2010/09/04/async-http-client-1-1-0-released/][1.1.0 release]].
 
   I would love to hear from you what you think of this library.
