@@ -43,10 +43,10 @@
   (print-user-and-text twit-str))
 #+END_SRC
 
-  Those two samples shows how to use HTTP Streams as clojure.core/seq,
-  this is a new feature that was introduced in 0.2.0 version.
+  Those two samples shows how to use HTTP Streams as [[http://richhickey.github.com/clojure/clojure.core-api.html#clojure.core/seq][clojure.core/seq]],
+  this is a new feature that was introduced in [[http://github.com/neotyk/http.async.client/tree/v0.2.0][v0.2.0]].
 
-  You can also handle sequences via callbacks.
+  You can also handle sequences via [[http://neotyk.github.com/http.async.client/docs.html#sec-1.2.4.2][callbacks]].
 
   Requesting HTTP resources that are not streams is even simpler:
 #+BEGIN_SRC clojure
@@ -56,12 +56,11 @@
 #+END_SRC
 
   There is extensive documentation available on [[http://neotyk.github.com/http.async.client][github pages]] of a
-  [[http://github.com/neotyk/http.async.client][project]], you can find also
-  [[http://github.com/neotyk/http.async.client/ ... ][Changelog] ].
+  [[http://github.com/neotyk/http.async.client][project]], you can also find [[http://github.com/neotyk/http.async.client/blob/master/changelog.org][Changelog]] and [[http://neotyk.github.com/ahc-clj/autodoc/][API]].
 
-  Big thanks to [[TODO LINK][Amsterdam Clojurians] ] this library
-  received much love and help from this group and would not be so easy
-  to work with. Kudos to [[http://twitter.com/jfarcand][Jeanfrancois Arcand]] for starting
-  [[http://github.com/AsyncHttpClient/async-http-client][async-http-client]] and a recent [[TODO blog][release] ].
+  Big thanks to [[http://groups.google.com/group/amsterdam-clojurians][Amsterdam Clojurians]] this library
+  received much love and help from this group.
+  Kudos to [[http://twitter.com/jfarcand][Jeanfrancois Arcand]] for starting
+  [[http://github.com/AsyncHttpClient/async-http-client][async-http-client]] and a recent [[http://jfarcand.wordpress.com/2010/09/04/async-http-client-1-1-0-released/][1.1.0 release]].
 
   I would love to hear from you what you think of this library.
