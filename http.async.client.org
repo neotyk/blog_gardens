@@ -1,0 +1,67 @@
+#+TITLE: Asynchronous HTTP Client for Clojure and Twitter Streaming API
+#+AUTHOR: Hubert Iwaniuk
+#+EMAIL: neotyk@kungfoo.pl
+* [[http://github.com/neotyk/http.async.client][*http.async.client*]] & [[http://dev.twitter.com/pages/streaming_api][Twitter Streaming API]]
+  [[http://github.com/neotyk/http.async.client][*http.async.client*]] is based on [[http://github.com/ning/async-http-client][Asynchronous Http Client for Java]]
+  which runs on top of [[http://jboss.org/netty][Netty Project]].
+
+  So much for introduction, lets see some code.
+
+  Importing:
+#+BEGIN_SRC clojure
+(ns twitter-sample
+  (:require [http.async.client :as c]
+            [org.danlarkin.json :as j]))
+#+END_SRC
+
+  Settings and helper to print twits as they fly by:
+#+BEGIN_SRC clojure
+(def u "username")
+(def p "password")
+
+(defn print-user-and-text [s]
+  (let [twit (j/decode-from-str s)
+        user (:screen_name (:user twit))
+        text (:text twit)]
+    (println user "=>" text)))
+#+END_SRC
+
+  Lets read *statuses/sample*::
+#+BEGIN_SRC clojure
+(doseq [twit-str (c/string
+                  (c/stream-seq :get "http://stream.twitter.com/1/statuses/sample.json"
+                                :auth {:user u :password p}))]
+  (print-user-and-text twit-str))
+#+END_SRC
+
+  Or *statuses/filter*:
+#+BEGIN_SRC clojure
+(doseq [twit-str (c/string
+                   (c/stream-seq :post "http://stream.twitter.com/1/statuses/filter.json"
+                                 :body {"track" "basketball,football,baseball,footy,soccer"}
+                                 :auth {:user u :password p}))]
+  (print-user-and-text twit-str))
+#+END_SRC
+
+  Those two samples shows how to use HTTP Streams as clojure.core/seq,
+  this is a new feature that was introduced in 0.2.0 version.
+
+  You can also handle sequences via callbacks.
+
+  Requesting HTTP resources that are not streams is even simpler:
+#+BEGIN_SRC clojure
+(let [response (c/GET "http://github.com/neotyk/http.async.client/")]
+  (c/await response)
+  (c/string response))
+#+END_SRC
+
+  There is extensive documentation available on [[http://neotyk.github.com/http.async.client][github pages]] of a
+  [[http://github.com/neotyk/http.async.client][project]], you can find also
+  [[http://github.com/neotyk/http.async.client/ ... ][Changelog] ].
+
+  Big thanks to [[TODO LINK][Amsterdam Clojurians] ] this library
+  received much love and help from this group and would not be so easy
+  to work with. Kudos to [[http://twitter.com/jfarcand][Jeanfrancois Arcand]] for starting
+  [[http://github.com/AsyncHttpClient/async-http-client][async-http-client]] and a recent [[TODO blog][release] ].
+
+  I would love to hear from you what you think of this library.
