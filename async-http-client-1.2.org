@@ -1,0 +1,146 @@
+#+TITLE: Async HTTP Client 1.2.0
+#+OPTIONS: toc:1
+* Intro
+  About month ago we released *async-http-client* 1.1.0.
+  During this month we received lots of contributions and user
+  feedback. We took all of this great feedback into consideration, and
+  here it is: lots of bug fixes and new features in
+  *async-http-client* are ready to be released.
+* Highlights
+  To cut the long story short here are highlights of few new features.
+** Authentication
+   The library now support 3 authentication scheme: Basic, Digest and
+   NTLM.
+#+BEGIN_SRC java
+RequestBuilder r = client.prepareGet(url)
+               .setRealm((new Realm.RealmBuilder())
+                          .setScheme(AuthScheme)
+                          .setPrincipal(user)
+                          .setPassword(admin)
+                          .setUsePreemptiveAuth(true).build());
+#+END_SRC
+   AuthScheme can be BASIC, DIGEST or NTLM.
+** WebDav
+   WebDav is now supported and can be used with two interfaces.
+*** Low level
+#+BEGIN_SRC java
+AsyncHttpClient c = new AsyncHttpClient();
+
+Request mkcolRequest = new RequestBuilder("MKCOL").setUrl("http://127.0.0.1:8080/folder1").build();
+Response response =  c.executeRequest(mkcolRequest).get();
+
+Request putRequest = new RequestBuilder("PUT").setUrl("http://127.0.0.1:8080/folder1/Test.txt").setBody("this is a test").build();
+response =  c.executeRequest(putRequest).get();
+
+Request propFindRequest = new RequestBuilder("PROPFIND").setUrl("http://127.0.0.1:8080/folder1/Test.txt").build();
+response =  c.executeRequest(propFindRequest).get();
+
+// Check the response.
+response.getStatusCode(); //Will return 207
+response.getResponseBody().contains("<status>HTTP/1.1 200 OK</status>"));
+#+END_SRC
+*** High level
+    You can also use a special AsyncHandler which construct a response
+    based on the webdav response's code.
+#+BEGIN_SRC java
+AsyncHttpClient c = new AsyncHttpClient();
+
+Request mkcolRequest = new RequestBuilder("MKCOL").setUrl("http://127.0.0.1:8080/folder1").build();
+Response response =  c.executeRequest(mkcolRequest).get();
+assertEquals(response.getStatusCode(), 201);
+
+Request propFindRequest = new RequestBuilder("PROPFIND").setUrl("http://127.0.0.1:8080/folder1/").build();
+WebDavResponse webDavResponse =  c.executeRequest(propFindRequest, new WebDavCompletionHandlerBase<WebDavResponse>() {
+
+    @Override
+    public WebDavResponse onCompleted(WebDavResponse response) throws Exception {
+        return response;
+    }
+}).get();
+
+webDavResponse.getStatusCode(); // will return 200.
+#+END_SRC
+** Zero copy
+   Sometimes you need to just download some content, with out
+   processing it, just download and store.
+#+BEGIN_SRC java
+File file = new File(url.toURI());
+
+File tmp = new File(System.getProperty("java.io.tmpdir") + File.separator + "zeroCopy.txt");
+final FileOutputStream stream = new FileOutputStream(tmp);
+// Upload a file using setBody(File);
+Future<Response> f = client.preparePost("http://127.0.0.1:" + port1 + "/").setBody(file).execute(new AsyncHandler<Response>() {
+    public void onThrowable(Throwable t) {}
+
+    public STATE onBodyPartReceived(HttpResponseBodyPart bodyPart) throws Exception {
+        bodyPart.writeTo(stream);
+        // Copy the bytes directly to a File. In our case it is an FileInputStream
+        return STATE.CONTINUE;
+    }
+
+    public STATE onStatusReceived(HttpResponseStatus responseStatus) throws Exception {
+        return STATE.CONTINUE;
+    }
+
+    public STATE onHeadersReceived(HttpResponseHeaders headers) throws Exception {
+        return STATE.CONTINUE;
+    }
+
+    public Response onCompleted() throws Exception {
+        return null;
+    }
+});
+
+Response resp = f.get();
+stream.close();
+#+END_SRC
+* Changelog
+** Bug fixes
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/6][Wrong import statement cause OSGi to fail]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/10][Parameter encoding issue]]
+    Test case by [[http://github.com/martint][Martin Traverso]].
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/11][Connection Pool: Make sure the channel is still open]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/16][NettyAsyncProvider optimization: avoid invoking onStatusReceived and onHeadersReceived multiple time per transaction]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/17][Do not set a default Content-Type]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/24][fix redirect loop issue]]
+    [[http://github.com/AsyncHttpClient/async-http-client/pull/24][Patch]] provided by [[http://github.com/jloomis][Jenny Loomis]].
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/22][NettyAsyncHttpProvider.construct incorrectly appends default port to host header]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/21][NettyAsyncHttpProvider.construct allows empty Request-URIs in Request-Line]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/20][The current reaper may close connection event if they are active]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/28][Escape from redirect loops & allow more urls]]
+    [[http://github.com/AsyncHttpClient/async-http-client/pull/28][Patch]] provided by [[http://github.com/jloomis][Jenny Loomis]].
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/34][Http to Https redirect broken]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/25][Mixing secure and not secure connections on a single client causes issues]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/19][Support custom HTTP methods]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/40][Configurable Connection Pool]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/23][NettyAsyncHttpProvider.construct should default to using Accept: */* header]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/42][AsyncHttpClientConfig.Builder leaks executors]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/43][onCompleted may get called twice]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/44][Race condition when the remote server close the connection and ConnectionsPool is used]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/47][Issue HTTPS tunneling when ProxyServer being set on the AsyncHttpConfig]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/31][Infinite redirects on some server because ":80" is appended to host name]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/51][Use full url (including host : port ) for request thru proxy]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/49][Channel must be closed when idle timeout fires]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/30][Per request follow redirects]]
+    [[http://github.com/AsyncHttpClient/async-http-client/pull/30][Patch]] provided by [[http://github.com/erwan][Erwan Loisant]].
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/33][MaximumConnectionsTotal doesn't work]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/29][Fix Idle timeout]]
+    [[http://github.com/AsyncHttpClient/async-http-client/commit/15f946584156555c32964bb9cbb30cdf32669e4c][Patch]] provided by [[http://github.com/felixtrepanier][felixtrepanier]].
+** New features
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/5][Add security support to ProxyServer]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/7][Add support for zero-copy file upload]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/8][Progress callbacks]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/12][Add CONNECT support]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/13][Add request timeout per request]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/14][Add support for zero-copy bytes to ResponseBodyPart]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/15][Make Response getter more robust, add helper]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/32][Add support for preemptive authentication configuration]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/35][Expose ByteBuffer in HttpResponseBodyPart to reduce byte copy]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/36][Add support for AsyncProviderConfig object that can be used to configure proprietary properties]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/37][SSL failure leaks channel]]
+    [[http://github.com/AsyncHttpClient/async-http-client/pull/38][Test case]] and a [[http://github.com/AsyncHttpClient/async-http-client/pull/39][fix]] provided by [[http://github.com/mpilquist][Michael Pilquist]].
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/50][Repackage the providers/* to providers/netty]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/41][Compile with 1.6+ and run with 1.5+]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/53][Add NTLM authentication support]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/45][Add WebDav support]]
+*** [[http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/54][Add support for a JDK Provider]]
