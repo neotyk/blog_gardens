@@ -7,7 +7,7 @@ lang="en" xml:lang="en">
 <title>Async HTTP Client 1.2.0</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2010-10-07 15:24:52 CEST"/>
+<meta name="generated" content="2010-10-07 18:40:09 CEST"/>
 <meta name="author" content="Hubert Iwaniuk"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -117,7 +117,14 @@ You can get it from <a href="http://repo1.maven.org/maven2/com/ning/async-http-c
 <p>This release support a new AsyncHttpProvider based on JDK's
 URLConnection. This provider can be used in environments that
 aren't supporting NIO.
-</p></div>
+</p>
+
+
+<pre class="src src-java"><span style="color: #228b22;">AsyncHttpClient</span> <span style="color: #a0522d;">client</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncHttpClient</span>(<span style="color: #7f007f;">new</span> <span style="color: #228b22;">JDKAsyncHttpProvider</span>(config));
+</pre>
+
+
+</div>
 
 </div>
 
@@ -146,16 +153,52 @@ AuthScheme can be BASIC, DIGEST or NTLM.
 </div>
 
 <div id="outline-container-2_3" class="outline-3">
-<h3 id="sec-2_3"><span class="section-number-3">2.3</span> WebDav </h3>
+<h3 id="sec-2_3"><span class="section-number-3">2.3</span> SSL Tunneling support </h3>
 <div class="outline-text-3" id="text-2_3">
+
+<p>This release also adds support for SSL Tunneling.
+</p>
+
+
+<pre class="src src-java"><span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span> <span style="color: #a0522d;">b</span> = <span style="color: #7f007f;">new</span> <span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span>();
+b.setFollowRedirects(<span style="color: #008b8b;">true</span>);
+
+<span style="color: #228b22;">ProxyServer</span> <span style="color: #a0522d;">ps</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">ProxyServer</span>(<span style="color: #008b8b;">ProxyServer</span>.<span style="color: #008b8b;">Protocol</span>.HTTPS, <span style="color: #8b2252;">"127.0.0.1"</span>, port1);
+b.setProxyServer(ps);
+
+<span style="color: #228b22;">AsyncHttpClientConfig</span> <span style="color: #a0522d;">config</span> = b.build();
+<span style="color: #228b22;">AsyncHttpClient</span> <span style="color: #a0522d;">asyncHttpClient</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncHttpClient</span>(config);
+
+<span style="color: #228b22;">RequestBuilder</span> <span style="color: #a0522d;">rb</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">RequestBuilder</span>(<span style="color: #8b2252;">"GET"</span>).setUrl(url);
+Future&lt;Response&gt; responseFuture = asyncHttpClient.executeRequest(rb.build(), <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncCompletionHandlerBase</span>() {
+
+    <span style="color: #7f007f;">public</span> <span style="color: #228b22;">void</span> <span style="color: #0000ff;">onThrowable</span>(<span style="color: #228b22;">Throwable</span> <span style="color: #a0522d;">t</span>) {
+        log.debug(t);
+    }
+
+    @Override
+    <span style="color: #7f007f;">public</span> Response onCompleted(<span style="color: #228b22;">Response</span> <span style="color: #a0522d;">response</span>) <span style="color: #7f007f;">throws</span> <span style="color: #228b22;">Exception</span> {
+        <span style="color: #7f007f;">return</span> response;
+    }
+});
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2_4" class="outline-3">
+<h3 id="sec-2_4"><span class="section-number-3">2.4</span> WebDav </h3>
+<div class="outline-text-3" id="text-2_4">
 
 <p>WebDav is now supported and can be used with two interfaces.
 </p>
 </div>
 
-<div id="outline-container-2_3_1" class="outline-4">
-<h4 id="sec-2_3_1"><span class="section-number-4">2.3.1</span> Low level </h4>
-<div class="outline-text-4" id="text-2_3_1">
+<div id="outline-container-2_4_1" class="outline-4">
+<h4 id="sec-2_4_1"><span class="section-number-4">2.4.1</span> Low level </h4>
+<div class="outline-text-4" id="text-2_4_1">
 
 
 
@@ -181,9 +224,9 @@ response =  c.executeRequest(propFindRequest).get();
 
 </div>
 
-<div id="outline-container-2_3_2" class="outline-4">
-<h4 id="sec-2_3_2"><span class="section-number-4">2.3.2</span> High level </h4>
-<div class="outline-text-4" id="text-2_3_2">
+<div id="outline-container-2_4_2" class="outline-4">
+<h4 id="sec-2_4_2"><span class="section-number-4">2.4.2</span> High level </h4>
+<div class="outline-text-4" id="text-2_4_2">
 
 <p>You can also use a special AsyncHandler which construct a response
 based on the webdav response's code.
@@ -214,9 +257,9 @@ webDavResponse.getStatusCode(); <span style="color: #b22222;">// </span><span st
 
 </div>
 
-<div id="outline-container-2_4" class="outline-3">
-<h3 id="sec-2_4"><span class="section-number-3">2.4</span> Zero copy </h3>
-<div class="outline-text-3" id="text-2_4">
+<div id="outline-container-2_5" class="outline-3">
+<h3 id="sec-2_5"><span class="section-number-3">2.5</span> Zero copy </h3>
+<div class="outline-text-3" id="text-2_5">
 
 <p>Sometimes you need to just download some content, with out
 copying/inspecting the bytes in memory, just download and store.
@@ -256,6 +299,29 @@ stream.close();
 
 
 </div>
+
+</div>
+
+<div id="outline-container-2_6" class="outline-3">
+<h3 id="sec-2_6"><span class="section-number-3">2.6</span> Automatic HTTPS redirects </h3>
+<div class="outline-text-3" id="text-2_6">
+
+<p>Another new feature is we do support redirect from http to HTTPS
+automatically:
+</p>
+
+
+<pre class="src src-java"><span style="color: #228b22;">AsyncHttpClientConfig</span> <span style="color: #a0522d;">cg</span> = <span style="color: #7f007f;">new</span> <span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span>().setFollowRedirects(<span style="color: #008b8b;">true</span>).build();
+<span style="color: #228b22;">AsyncHttpClient</span> <span style="color: #a0522d;">c</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncHttpClient</span>(cg);
+
+<span style="color: #228b22;">Response</span> <span style="color: #a0522d;">response</span> = c.preparePost(url).execute().get();
+</pre>
+
+
+<p>
+If the server redirect us to https, we will follow the new url
+without any issue.
+</p></div>
 </div>
 
 </div>
@@ -619,7 +685,7 @@ stream.close();
 <div id="postamble">
 <p class="author"> Author: Hubert Iwaniuk
 </p>
-<p class="date"> Date: 2010-10-07 15:24:52 CEST</p>
+<p class="date"> Date: 2010-10-07 18:40:09 CEST</p>
 <p class="creator">HTML generated by org-mode 7.01trans in emacs 23</p>
 </div>
 </div>

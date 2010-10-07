@@ -14,6 +14,9 @@
    This release support a new AsyncHttpProvider based on JDK's
    URLConnection. This provider can be used in environments that
    aren't supporting NIO.
+#+BEGIN_SRC java
+AsyncHttpClient client = new AsyncHttpClient(new JDKAsyncHttpProvider(config));
+#+END_SRC
 ** Authentication
    The library now support 3 authentication scheme: Basic, Digest and
    NTLM.
@@ -26,6 +29,31 @@ RequestBuilder r = client.prepareGet(url)
                           .setUsePreemptiveAuth(true).build());
 #+END_SRC
    AuthScheme can be BASIC, DIGEST or NTLM.
+** SSL Tunneling support
+   This release also adds support for SSL Tunneling.
+#+BEGIN_SRC java
+AsyncHttpClientConfig.Builder b = new AsyncHttpClientConfig.Builder();
+b.setFollowRedirects(true);
+
+ProxyServer ps = new ProxyServer(ProxyServer.Protocol.HTTPS, "127.0.0.1", port1);
+b.setProxyServer(ps);
+
+AsyncHttpClientConfig config = b.build();
+AsyncHttpClient asyncHttpClient = new AsyncHttpClient(config);
+
+RequestBuilder rb = new RequestBuilder("GET").setUrl(url);
+Future<Response> responseFuture = asyncHttpClient.executeRequest(rb.build(), new AsyncCompletionHandlerBase() {
+
+    public void onThrowable(Throwable t) {
+        log.debug(t);
+    }
+
+    @Override
+    public Response onCompleted(Response response) throws Exception {
+        return response;
+    }
+});
+#+END_SRC
 ** WebDav
    WebDav is now supported and can be used with two interfaces.
 *** Low level
@@ -100,6 +128,17 @@ Future<Response> f = client.preparePost("http://127.0.0.1:" + port1 + "/").setBo
 Response resp = f.get();
 stream.close();
 #+END_SRC
+** Automatic HTTPS redirects
+   Another new feature is we do support redirect from http to HTTPS
+   automatically:
+#+BEGIN_SRC java
+AsyncHttpClientConfig cg = new AsyncHttpClientConfig.Builder().setFollowRedirects(true).build();
+AsyncHttpClient c = new AsyncHttpClient(cg);
+
+Response response = c.preparePost(url).execute().get();
+#+END_SRC
+   If the server redirect us to https, we will follow the new url
+   without any issue.
 * Changelog
 ** Bug fixes
 *** [[http://github.com/AsyncHttpClient/async-http-client/issues/issue/6][Wrong import statement cause OSGi to fail]]
