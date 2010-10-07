@@ -6,8 +6,14 @@
   feedback. We took all of this great feedback into consideration, and
   here it is: lots of bug fixes and new features in
   *async-http-client* are ready to be released.
+
+  You can get it from [[http://repo1.maven.org/maven2/com/ning/async-http-client/1.2.0/][Maven Central]] near you.
 * Highlights
   To cut the long story short here are highlights of few new features.
+** JDK based provider
+   This release support a new AsyncHttpProvider based on JDK's
+   URLConnection. This provider can be used in environments that
+   aren't supporting NIO.
 ** Authentication
    The library now support 3 authentication scheme: Basic, Digest and
    NTLM.
@@ -62,7 +68,7 @@ webDavResponse.getStatusCode(); // will return 200.
 #+END_SRC
 ** Zero copy
    Sometimes you need to just download some content, with out
-   processing it, just download and store.
+   copying/inspecting the bytes in memory, just download and store.
 #+BEGIN_SRC java
 File file = new File(url.toURI());
 
