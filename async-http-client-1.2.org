@@ -1,5 +1,5 @@
 #+TITLE: Async HTTP Client 1.2.0
-#+OPTIONS: toc:1
+#+OPTIONS: H:1 num:nil toc:nil f:nil author:nil creator:nil timestamp:nil
 * Intro
   About month ago we released *async-http-client* 1.1.0.
   During this month we received lots of contributions and user

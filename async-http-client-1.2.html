@@ -7,7 +7,7 @@ lang="en" xml:lang="en">
 <title>Async HTTP Client 1.2.0</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2010-10-07 18:40:09 CEST"/>
+<meta name="generated" content="2010-10-07 23:38:05 CEST"/>
 <meta name="author" content="Hubert Iwaniuk"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -75,19 +75,8 @@ lang="en" xml:lang="en">
 <h1 class="title">Async HTTP Client 1.2.0</h1>
 
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1 Intro </a></li>
-<li><a href="#sec-2">2 Highlights </a></li>
-<li><a href="#sec-3">3 Changelog </a></li>
-</ul>
-</div>
-</div>
-
 <div id="outline-container-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Intro </h2>
+<h2 id="sec-1">Intro </h2>
 <div class="outline-text-2" id="text-1">
 
 <p>About month ago we released <b>async-http-client</b> 1.1.0.
@@ -103,38 +92,29 @@ You can get it from <a href="http://repo1.maven.org/maven2/com/ning/async-http-c
 </div>
 
 <div id="outline-container-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Highlights </h2>
+<h2 id="sec-2">Highlights </h2>
 <div class="outline-text-2" id="text-2">
 
 <p>To cut the long story short here are highlights of few new features.
-</p>
-</div>
-
-<div id="outline-container-2_1" class="outline-3">
-<h3 id="sec-2_1"><span class="section-number-3">2.1</span> JDK based provider </h3>
-<div class="outline-text-3" id="text-2_1">
-
-<p>This release support a new AsyncHttpProvider based on JDK's
+</p><ul>
+<li id="sec-2_1">JDK based provider <br/>
+This release support a new AsyncHttpProvider based on JDK's
 URLConnection. This provider can be used in environments that
 aren't supporting NIO.
-</p>
+
 
 
 <pre class="src src-java"><span style="color: #228b22;">AsyncHttpClient</span> <span style="color: #a0522d;">client</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncHttpClient</span>(<span style="color: #7f007f;">new</span> <span style="color: #228b22;">JDKAsyncHttpProvider</span>(config));
 </pre>
 
 
-</div>
-
-</div>
-
-<div id="outline-container-2_2" class="outline-3">
-<h3 id="sec-2_2"><span class="section-number-3">2.2</span> Authentication </h3>
-<div class="outline-text-3" id="text-2_2">
-
-<p>The library now support 3 authentication scheme: Basic, Digest and
+</li>
+</ul>
+<ul>
+<li id="sec-2_2">Authentication <br/>
+The library now support 3 authentication scheme: Basic, Digest and
 NTLM.
-</p>
+
 
 
 <pre class="src src-java"><span style="color: #228b22;">RequestBuilder</span> <span style="color: #a0522d;">r</span> = client.prepareGet(url)
@@ -148,16 +128,12 @@ NTLM.
 
 <p>
 AuthScheme can be BASIC, DIGEST or NTLM.
-</p></div>
+</p></li>
+</ul>
+<ul>
+<li id="sec-2_3">SSL Tunneling support <br/>
+This release also adds support for SSL Tunneling.
 
-</div>
-
-<div id="outline-container-2_3" class="outline-3">
-<h3 id="sec-2_3"><span class="section-number-3">2.3</span> SSL Tunneling support </h3>
-<div class="outline-text-3" id="text-2_3">
-
-<p>This release also adds support for SSL Tunneling.
-</p>
 
 
 <pre class="src src-java"><span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span> <span style="color: #a0522d;">b</span> = <span style="color: #7f007f;">new</span> <span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span>();
@@ -184,22 +160,13 @@ Future&lt;Response&gt; responseFuture = asyncHttpClient.executeRequest(rb.build(
 </pre>
 
 
-</div>
-
-</div>
-
-<div id="outline-container-2_4" class="outline-3">
-<h3 id="sec-2_4"><span class="section-number-3">2.4</span> WebDav </h3>
-<div class="outline-text-3" id="text-2_4">
-
-<p>WebDav is now supported and can be used with two interfaces.
-</p>
-</div>
-
-<div id="outline-container-2_4_1" class="outline-4">
-<h4 id="sec-2_4_1"><span class="section-number-4">2.4.1</span> Low level </h4>
-<div class="outline-text-4" id="text-2_4_1">
-
+</li>
+</ul>
+<ul>
+<li id="sec-2_4">WebDav <br/>
+WebDav is now supported and can be used with two interfaces.
+<ul>
+<li id="sec-2_4_1">Low level <br/>
 
 
 
@@ -220,17 +187,13 @@ response =  c.executeRequest(propFindRequest).get();
 </pre>
 
 
-</div>
-
-</div>
-
-<div id="outline-container-2_4_2" class="outline-4">
-<h4 id="sec-2_4_2"><span class="section-number-4">2.4.2</span> High level </h4>
-<div class="outline-text-4" id="text-2_4_2">
-
-<p>You can also use a special AsyncHandler which construct a response
+</li>
+</ul>
+<ul>
+<li id="sec-2_4_2">High level <br/>
+You can also use a special AsyncHandler which construct a response
 based on the webdav response's code.
-</p>
+
 
 
 <pre class="src src-java"><span style="color: #228b22;">AsyncHttpClient</span> <span style="color: #a0522d;">c</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">AsyncHttpClient</span>();
@@ -252,18 +215,15 @@ webDavResponse.getStatusCode(); <span style="color: #b22222;">// </span><span st
 </span></pre>
 
 
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-2_5" class="outline-3">
-<h3 id="sec-2_5"><span class="section-number-3">2.5</span> Zero copy </h3>
-<div class="outline-text-3" id="text-2_5">
-
-<p>Sometimes you need to just download some content, with out
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-2_5">Zero copy <br/>
+Sometimes you need to just download some content, with out
 copying/inspecting the bytes in memory, just download and store.
-</p>
+
 
 
 <pre class="src src-java"><span style="color: #228b22;">File</span> <span style="color: #a0522d;">file</span> = <span style="color: #7f007f;">new</span> <span style="color: #228b22;">File</span>(url.toURI());
@@ -298,17 +258,13 @@ stream.close();
 </pre>
 
 
-</div>
-
-</div>
-
-<div id="outline-container-2_6" class="outline-3">
-<h3 id="sec-2_6"><span class="section-number-3">2.6</span> Automatic HTTPS redirects </h3>
-<div class="outline-text-3" id="text-2_6">
-
-<p>Another new feature is we do support redirect from http to HTTPS
+</li>
+</ul>
+<ul>
+<li id="sec-2_6">Automatic HTTPS redirects <br/>
+Another new feature is we do support redirect from http to HTTPS
 automatically:
-</p>
+
 
 
 <pre class="src src-java"><span style="color: #228b22;">AsyncHttpClientConfig</span> <span style="color: #a0522d;">cg</span> = <span style="color: #7f007f;">new</span> <span style="color: #008b8b;">AsyncHttpClientConfig</span>.<span style="color: #228b22;">Builder</span>().setFollowRedirects(<span style="color: #008b8b;">true</span>).build();
@@ -321,372 +277,197 @@ automatically:
 <p>
 If the server redirect us to https, we will follow the new url
 without any issue.
-</p></div>
+</p></li>
+</ul>
 </div>
 
 </div>
 
 <div id="outline-container-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Changelog </h2>
+<h2 id="sec-3">Changelog </h2>
 <div class="outline-text-2" id="text-3">
 
-
-</div>
-
-<div id="outline-container-3_1" class="outline-3">
-<h3 id="sec-3_1"><span class="section-number-3">3.1</span> Bug fixes </h3>
-<div class="outline-text-3" id="text-3_1">
-
-
-</div>
-
-<div id="outline-container-3_1_1" class="outline-4">
-<h4 id="sec-3_1_1"><span class="section-number-4">3.1.1</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/6">Wrong import statement cause OSGi to fail</a> </h4>
-<div class="outline-text-4" id="text-3_1_1">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_2" class="outline-4">
-<h4 id="sec-3_1_2"><span class="section-number-4">3.1.2</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/10">Parameter encoding issue</a> </h4>
-<div class="outline-text-4" id="text-3_1_2">
-
-<p>Test case by <a href="http://github.com/martint">Martin Traverso</a>.
-</p></div>
-
-</div>
-
-<div id="outline-container-3_1_3" class="outline-4">
-<h4 id="sec-3_1_3"><span class="section-number-4">3.1.3</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/11">Connection Pool: Make sure the channel is still open</a> </h4>
-<div class="outline-text-4" id="text-3_1_3">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_4" class="outline-4">
-<h4 id="sec-3_1_4"><span class="section-number-4">3.1.4</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/16">NettyAsyncProvider optimization: avoid invoking onStatusReceived and onHeadersReceived multiple time per transaction</a> </h4>
-<div class="outline-text-4" id="text-3_1_4">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_5" class="outline-4">
-<h4 id="sec-3_1_5"><span class="section-number-4">3.1.5</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/17">Do not set a default Content-Type</a> </h4>
-<div class="outline-text-4" id="text-3_1_5">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_6" class="outline-4">
-<h4 id="sec-3_1_6"><span class="section-number-4">3.1.6</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/24">fix redirect loop issue</a> </h4>
-<div class="outline-text-4" id="text-3_1_6">
-
-<p><a href="http://github.com/AsyncHttpClient/async-http-client/pull/24">Patch</a> provided by <a href="http://github.com/jloomis">Jenny Loomis</a>.
-</p></div>
-
-</div>
-
-<div id="outline-container-3_1_7" class="outline-4">
-<h4 id="sec-3_1_7"><span class="section-number-4">3.1.7</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/22">NettyAsyncHttpProvider.construct incorrectly appends default port to host header</a> </h4>
-<div class="outline-text-4" id="text-3_1_7">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_8" class="outline-4">
-<h4 id="sec-3_1_8"><span class="section-number-4">3.1.8</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/21">NettyAsyncHttpProvider.construct allows empty Request-URIs in Request-Line</a> </h4>
-<div class="outline-text-4" id="text-3_1_8">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_9" class="outline-4">
-<h4 id="sec-3_1_9"><span class="section-number-4">3.1.9</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/20">The current reaper may close connection event if they are active</a> </h4>
-<div class="outline-text-4" id="text-3_1_9">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_10" class="outline-4">
-<h4 id="sec-3_1_10"><span class="section-number-4">3.1.10</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/28">Escape from redirect loops &amp; allow more urls</a> </h4>
-<div class="outline-text-4" id="text-3_1_10">
-
-<p><a href="http://github.com/AsyncHttpClient/async-http-client/pull/28">Patch</a> provided by <a href="http://github.com/jloomis">Jenny Loomis</a>.
-</p></div>
-
-</div>
-
-<div id="outline-container-3_1_11" class="outline-4">
-<h4 id="sec-3_1_11"><span class="section-number-4">3.1.11</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/34">Http to Https redirect broken</a> </h4>
-<div class="outline-text-4" id="text-3_1_11">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_12" class="outline-4">
-<h4 id="sec-3_1_12"><span class="section-number-4">3.1.12</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/25">Mixing secure and not secure connections on a single client causes issues</a> </h4>
-<div class="outline-text-4" id="text-3_1_12">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_13" class="outline-4">
-<h4 id="sec-3_1_13"><span class="section-number-4">3.1.13</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/19">Support custom HTTP methods</a> </h4>
-<div class="outline-text-4" id="text-3_1_13">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_14" class="outline-4">
-<h4 id="sec-3_1_14"><span class="section-number-4">3.1.14</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/40">Configurable Connection Pool</a> </h4>
-<div class="outline-text-4" id="text-3_1_14">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_15" class="outline-4">
-<h4 id="sec-3_1_15"><span class="section-number-4">3.1.15</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/23">NettyAsyncHttpProvider.construct should default to using Accept: <b>/</b> header</a> </h4>
-<div class="outline-text-4" id="text-3_1_15">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_16" class="outline-4">
-<h4 id="sec-3_1_16"><span class="section-number-4">3.1.16</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/42">AsyncHttpClientConfig.Builder leaks executors</a> </h4>
-<div class="outline-text-4" id="text-3_1_16">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_17" class="outline-4">
-<h4 id="sec-3_1_17"><span class="section-number-4">3.1.17</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/43">onCompleted may get called twice</a> </h4>
-<div class="outline-text-4" id="text-3_1_17">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_18" class="outline-4">
-<h4 id="sec-3_1_18"><span class="section-number-4">3.1.18</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/44">Race condition when the remote server close the connection and ConnectionsPool is used</a> </h4>
-<div class="outline-text-4" id="text-3_1_18">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_19" class="outline-4">
-<h4 id="sec-3_1_19"><span class="section-number-4">3.1.19</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/47">Issue HTTPS tunneling when ProxyServer being set on the AsyncHttpConfig</a> </h4>
-<div class="outline-text-4" id="text-3_1_19">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_20" class="outline-4">
-<h4 id="sec-3_1_20"><span class="section-number-4">3.1.20</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/31">Infinite redirects on some server because ":80" is appended to host name</a> </h4>
-<div class="outline-text-4" id="text-3_1_20">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_21" class="outline-4">
-<h4 id="sec-3_1_21"><span class="section-number-4">3.1.21</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/51">Use full url (including host : port ) for request thru proxy</a> </h4>
-<div class="outline-text-4" id="text-3_1_21">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_22" class="outline-4">
-<h4 id="sec-3_1_22"><span class="section-number-4">3.1.22</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/49">Channel must be closed when idle timeout fires</a> </h4>
-<div class="outline-text-4" id="text-3_1_22">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_23" class="outline-4">
-<h4 id="sec-3_1_23"><span class="section-number-4">3.1.23</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/30">Per request follow redirects</a> </h4>
-<div class="outline-text-4" id="text-3_1_23">
-
-<p><a href="http://github.com/AsyncHttpClient/async-http-client/pull/30">Patch</a> provided by <a href="http://github.com/erwan">Erwan Loisant</a>.
-</p></div>
-
-</div>
-
-<div id="outline-container-3_1_24" class="outline-4">
-<h4 id="sec-3_1_24"><span class="section-number-4">3.1.24</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/33">MaximumConnectionsTotal doesn't work</a> </h4>
-<div class="outline-text-4" id="text-3_1_24">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_1_25" class="outline-4">
-<h4 id="sec-3_1_25"><span class="section-number-4">3.1.25</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/29">Fix Idle timeout</a> </h4>
-<div class="outline-text-4" id="text-3_1_25">
-
-<p><a href="http://github.com/AsyncHttpClient/async-http-client/commit/15f946584156555c32964bb9cbb30cdf32669e4c">Patch</a> provided by <a href="http://github.com/felixtrepanier">felixtrepanier</a>.
-</p></div>
-</div>
-
-</div>
-
-<div id="outline-container-3_2" class="outline-3">
-<h3 id="sec-3_2"><span class="section-number-3">3.2</span> New features </h3>
-<div class="outline-text-3" id="text-3_2">
-
-
-</div>
-
-<div id="outline-container-3_2_1" class="outline-4">
-<h4 id="sec-3_2_1"><span class="section-number-4">3.2.1</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/5">Add security support to ProxyServer</a> </h4>
-<div class="outline-text-4" id="text-3_2_1">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_2" class="outline-4">
-<h4 id="sec-3_2_2"><span class="section-number-4">3.2.2</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/7">Add support for zero-copy file upload</a> </h4>
-<div class="outline-text-4" id="text-3_2_2">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_3" class="outline-4">
-<h4 id="sec-3_2_3"><span class="section-number-4">3.2.3</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/8">Progress callbacks</a> </h4>
-<div class="outline-text-4" id="text-3_2_3">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_4" class="outline-4">
-<h4 id="sec-3_2_4"><span class="section-number-4">3.2.4</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/12">Add CONNECT support</a> </h4>
-<div class="outline-text-4" id="text-3_2_4">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_5" class="outline-4">
-<h4 id="sec-3_2_5"><span class="section-number-4">3.2.5</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/13">Add request timeout per request</a> </h4>
-<div class="outline-text-4" id="text-3_2_5">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_6" class="outline-4">
-<h4 id="sec-3_2_6"><span class="section-number-4">3.2.6</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/14">Add support for zero-copy bytes to ResponseBodyPart</a> </h4>
-<div class="outline-text-4" id="text-3_2_6">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_7" class="outline-4">
-<h4 id="sec-3_2_7"><span class="section-number-4">3.2.7</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/15">Make Response getter more robust, add helper</a> </h4>
-<div class="outline-text-4" id="text-3_2_7">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_8" class="outline-4">
-<h4 id="sec-3_2_8"><span class="section-number-4">3.2.8</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/32">Add support for preemptive authentication configuration</a> </h4>
-<div class="outline-text-4" id="text-3_2_8">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_9" class="outline-4">
-<h4 id="sec-3_2_9"><span class="section-number-4">3.2.9</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/35">Expose ByteBuffer in HttpResponseBodyPart to reduce byte copy</a> </h4>
-<div class="outline-text-4" id="text-3_2_9">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_10" class="outline-4">
-<h4 id="sec-3_2_10"><span class="section-number-4">3.2.10</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/36">Add support for AsyncProviderConfig object that can be used to configure proprietary properties</a> </h4>
-<div class="outline-text-4" id="text-3_2_10">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_11" class="outline-4">
-<h4 id="sec-3_2_11"><span class="section-number-4">3.2.11</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/37">SSL failure leaks channel</a> </h4>
-<div class="outline-text-4" id="text-3_2_11">
-
-<p><a href="http://github.com/AsyncHttpClient/async-http-client/pull/38">Test case</a> and a <a href="http://github.com/AsyncHttpClient/async-http-client/pull/39">fix</a> provided by <a href="http://github.com/mpilquist">Michael Pilquist</a>.
-</p></div>
-
-</div>
-
-<div id="outline-container-3_2_12" class="outline-4">
-<h4 id="sec-3_2_12"><span class="section-number-4">3.2.12</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/50">Repackage the providers/* to providers/netty</a> </h4>
-<div class="outline-text-4" id="text-3_2_12">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_13" class="outline-4">
-<h4 id="sec-3_2_13"><span class="section-number-4">3.2.13</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/41">Compile with 1.6+ and run with 1.5+</a> </h4>
-<div class="outline-text-4" id="text-3_2_13">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_14" class="outline-4">
-<h4 id="sec-3_2_14"><span class="section-number-4">3.2.14</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/53">Add NTLM authentication support</a> </h4>
-<div class="outline-text-4" id="text-3_2_14">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_15" class="outline-4">
-<h4 id="sec-3_2_15"><span class="section-number-4">3.2.15</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/45">Add WebDav support</a> </h4>
-<div class="outline-text-4" id="text-3_2_15">
-
-</div>
-
-</div>
-
-<div id="outline-container-3_2_16" class="outline-4">
-<h4 id="sec-3_2_16"><span class="section-number-4">3.2.16</span> <a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/54">Add support for a JDK Provider</a> </h4>
-<div class="outline-text-4" id="text-3_2_16">
-
-</div>
-</div>
+<ul>
+<li id="sec-3_1">Bug fixes <br/>
+<ul>
+<li id="sec-3_1_1"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/6">Wrong import statement cause OSGi to fail</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_2"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/10">Parameter encoding issue</a> <br/>
+Test case by <a href="http://github.com/martint">Martin Traverso</a>.
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_3"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/11">Connection Pool: Make sure the channel is still open</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_4"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/16">NettyAsyncProvider optimization: avoid invoking onStatusReceived and onHeadersReceived multiple time per transaction</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_5"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/17">Do not set a default Content-Type</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_6"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/24">fix redirect loop issue</a> <br/>
+<a href="http://github.com/AsyncHttpClient/async-http-client/pull/24">Patch</a> provided by <a href="http://github.com/jloomis">Jenny Loomis</a>.
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_7"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/22">NettyAsyncHttpProvider.construct incorrectly appends default port to host header</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_8"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/21">NettyAsyncHttpProvider.construct allows empty Request-URIs in Request-Line</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_9"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/20">The current reaper may close connection event if they are active</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_10"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/28">Escape from redirect loops &amp; allow more urls</a> <br/>
+<a href="http://github.com/AsyncHttpClient/async-http-client/pull/28">Patch</a> provided by <a href="http://github.com/jloomis">Jenny Loomis</a>.
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_11"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/34">Http to Https redirect broken</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_12"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/25">Mixing secure and not secure connections on a single client causes issues</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_13"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/19">Support custom HTTP methods</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_14"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/40">Configurable Connection Pool</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_15"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/23">NettyAsyncHttpProvider.construct should default to using Accept: <b>/</b> header</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_16"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/42">AsyncHttpClientConfig.Builder leaks executors</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_17"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/43">onCompleted may get called twice</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_18"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/44">Race condition when the remote server close the connection and ConnectionsPool is used</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_19"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/47">Issue HTTPS tunneling when ProxyServer being set on the AsyncHttpConfig</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_20"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/31">Infinite redirects on some server because ":80" is appended to host name</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_21"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/51">Use full url (including host : port ) for request thru proxy</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_22"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/49">Channel must be closed when idle timeout fires</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_23"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/30">Per request follow redirects</a> <br/>
+<a href="http://github.com/AsyncHttpClient/async-http-client/pull/30">Patch</a> provided by <a href="http://github.com/erwan">Erwan Loisant</a>.
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_24"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/33">MaximumConnectionsTotal doesn't work</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_1_25"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/29">Fix Idle timeout</a> <br/>
+<a href="http://github.com/AsyncHttpClient/async-http-client/commit/15f946584156555c32964bb9cbb30cdf32669e4c">Patch</a> provided by <a href="http://github.com/felixtrepanier">felixtrepanier</a>.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2">New features <br/>
+<ul>
+<li id="sec-3_2_1"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/5">Add security support to ProxyServer</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_2"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/7">Add support for zero-copy file upload</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_3"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/8">Progress callbacks</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_4"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/12">Add CONNECT support</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_5"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/13">Add request timeout per request</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_6"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/issue/14">Add support for zero-copy bytes to ResponseBodyPart</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_7"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed/#issue/15">Make Response getter more robust, add helper</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_8"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/32">Add support for preemptive authentication configuration</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_9"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/35">Expose ByteBuffer in HttpResponseBodyPart to reduce byte copy</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_10"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/36">Add support for AsyncProviderConfig object that can be used to configure proprietary properties</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_11"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/37">SSL failure leaks channel</a> <br/>
+<a href="http://github.com/AsyncHttpClient/async-http-client/pull/38">Test case</a> and a <a href="http://github.com/AsyncHttpClient/async-http-client/pull/39">fix</a> provided by <a href="http://github.com/mpilquist">Michael Pilquist</a>.
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_12"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/50">Repackage the providers/* to providers/netty</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_13"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/41">Compile with 1.6+ and run with 1.5+</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_14"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/53">Add NTLM authentication support</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_15"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/45">Add WebDav support</a> <br/>
+</li>
+</ul>
+<ul>
+<li id="sec-3_2_16"><a href="http://github.com/AsyncHttpClient/async-http-client/issues/closed#issue/54">Add support for a JDK Provider</a> <br/>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="postamble">
-<p class="author"> Author: Hubert Iwaniuk
-</p>
-<p class="date"> Date: 2010-10-07 18:40:09 CEST</p>
-<p class="creator">HTML generated by org-mode 7.01trans in emacs 23</p>
 </div>
 </div>
 </body>
