@@ -1,0 +1,24 @@
+#+TITLE: Announcing status-codes
+#+AUTHOR: Hubert Iwaniuk
+#+EMAIL: neotyk@kungfoo.pl
+
+* [[https://github.com/neotyk/status-codes][*status-codes*]] is easy response status codes
+  It's easy status codes for compojure.
+  Not that status codes in compojure are particularly hard.
+  I just prefer in applications that I work with to use keywords for
+  status codes, rather than status codes as numbers.
+#+BEGIN_SRC clojure
+  (routes
+   (GET "/ok"           _ :ok)
+   (GET "/accepted"     _ :accepted)
+   (GET "/ok-map"       _ {:status :ok})
+   (GET "/accepted-map" _ {:status :accepted}))
+#+END_SRC
+  Not much really, but it reads better than 200, 202 and so on.
+  In order to have this sugar in your routes pick status-codes from
+  [[http://clojars.org/status-codes][clojars]], and require/use status-codes:
+#+BEGIN_SRC clojure
+  (ns your.ns
+    (:use status-codes))
+#+END_SRC
+  Enjoy.
